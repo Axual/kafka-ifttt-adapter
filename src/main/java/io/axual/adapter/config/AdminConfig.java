@@ -46,8 +46,14 @@ public class AdminConfig {
     @Value("${cluster.autoCreateTopic}")
     private boolean autoCreateTopic;
 
-    @Value("${cluster.topic.name}")
-    private String topicName;
+    @Value("${cluster.topic.ifttt.name}")
+    private String iftttTopic;
+
+    @Value("${cluster.topic.notifications.name}")
+    private String notificationsTopic;
+
+    @Value("${cluster.topic.gitlab.name}")
+    private String gitlabTopic;
 
     @Value("${cluster.topic.minIsr}")
     private String topicMinIsr;
@@ -79,14 +85,32 @@ public class AdminConfig {
 
     @Bean
     @ConditionalOnProperty(value = "config.autoCreateTopic", havingValue = "true")
-    public NewTopic topic() {
+    public NewTopic iftttTopic() {
+        return new NewTopic(iftttTopic, Integer.valueOf(topicPartitions), Short.valueOf(topicReplicationFactor))
+                .configs(getTopicConfigs());
+    }
+
+    @Bean
+    @ConditionalOnProperty(value = "config.autoCreateTopic", havingValue = "true")
+    public NewTopic notificationsTopic() {
+        return new NewTopic(notificationsTopic, Integer.valueOf(topicPartitions), Short.valueOf(topicReplicationFactor))
+                .configs(getTopicConfigs());
+    }
+
+    @Bean
+    @ConditionalOnProperty(value = "config.autoCreateTopic", havingValue = "true")
+    public NewTopic gitlabTopic() {
+        return new NewTopic(gitlabTopic, Integer.valueOf(topicPartitions), Short.valueOf(topicReplicationFactor))
+                .configs(getTopicConfigs());
+    }
+
+    private Map<String, String> getTopicConfigs() {
         Map<String, String> topicConfigs = new HashMap<>();
         topicConfigs.put(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG, topicMinIsr);
         topicConfigs.put(TopicConfig.CLEANUP_POLICY_CONFIG, TopicConfig.CLEANUP_POLICY_DELETE);
         topicConfigs.put(TopicConfig.RETENTION_MS_CONFIG, topicRetentionMs);
         topicConfigs.put(TopicConfig.SEGMENT_MS_CONFIG, topicSegmentMs);
 
-        return new NewTopic(topicName, Integer.valueOf(topicPartitions), Short.valueOf(topicReplicationFactor))
-                .configs(topicConfigs);
+        return topicConfigs;
     }
 }

@@ -5,9 +5,13 @@ logging:
 server:
   port: 8080
 
+
+googleHome:
+  url: "http://localhost:1880"
+
 cluster:
   autoCreateTopic: true
-  bootstrapServers: "localhost:9092"
+  bootstrapServers: "localhost:9093"
   securityProtocol: "PLAINTEXT"
   ssl:
     key-store-location: ""
@@ -16,12 +20,21 @@ cluster:
     trust-store-location: ""
     trust-store-password: ""
   topic:
-    name: ifttt-topic
     minIsr: "1"
     partitions: "2"
     replicationFactor: "1"
     retentionMs: "3600000"
     segmentMs: "86400000"
+    ifttt:
+      name: ifttt
+    notifications:
+      name: notifications
+    gitlab:
+      name: pipeline
+  gitlab:
+    token: 91da49868407c3e269927d21bcfdc0
+    refName: master
+    projectId: 12410898
   producer:
     clientId: "ifttt-adapter-producer"
   consumer:

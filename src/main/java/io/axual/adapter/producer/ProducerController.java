@@ -1,7 +1,6 @@
-package io.axual.adapter.controller;
+package io.axual.adapter.producer;
 
 import io.axual.adapter.events.IFTTTEvent;
-import io.axual.adapter.service.ProducerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
