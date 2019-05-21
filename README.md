@@ -59,12 +59,17 @@ must have permissions to create topics.
 cluster:
   autoCreateTopic: true
   topic:
-    name: ifttt-adapter
     minIsr: "1"
     partitions: "2"
     replicationFactor: "1"
     retentionMs: "3600000"
     segmentMs: "86400000"
+    ifttt:
+      name: ifttt
+    notifications:
+      name: notifications
+    gitlab:
+      name: pipeline
 ```
 
 #### SSL Config
